@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Individual Pet</h2>
+    
+
+    
+        <div>
+            <div>
+                <h1>{{pet.get('name')['$t']}}</h1>
+            </div>
+            <div>
+                <li>{{pet.get('sex')['$t']}}</li>
+            </div>
+            <div>
+                <li>{{pet['breeds'].get('breed')[1]['$t']}}</li>
+            </div>
+            <div>
+                <li> Mixed Breed: {{pet.get('mix')['$t']}}</li>
+            <div>
+                <ul>{{ pet['contact'].get('address1')['$t']}}</ul>
+                <ul>{{ pet['contact'].get('city')['$t']}}</ul>
+                <ul>{{ pet['contact'].get('phone')['$t']}}</ul>
+                <ul>{{ pet['contact'].get('email')['$t']}}</ul>
+            </div>
+            </div>
+                <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
+            <div>
+                 <p>{{pet.get('description')['$t']}}</p>
+            </div>
+            
+        </div>
+
+
+    
+
+
+
+
+
+{% endblock %}

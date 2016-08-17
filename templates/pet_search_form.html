@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="/search" method="GET">
+    
+    <div>
+        <label>
+            Breed:
+             <select name="breed">
+                {% for breed in breeds %}
+              <option value={{ breed }}>{{ breed }}</option>
+              {% endfor %}
+            </select>
+        </label>    
+    </div>
+
+    <div>
+        <label>
+            Age:
+            <br>
+            <input type="checkbox" name="age" value="Young">Young<br>
+            <input type="checkbox" name="age" value="Baby">Baby<br>
+            <input type="checkbox" name="age" value="Adult">Adult<br>
+            <input type="checkbox" name="age" value="Senior">Senior<br>
+        </label>
+     <div>
+        <label>
+            Size:
+            <br>
+            <input type="checkbox" name="size" value="S">Small<br>
+            <input type="checkbox" name="size" value="M">Medium<br>
+            <input type="checkbox" name="size" value="L">Large<br>
+            <input type="checkbox" name="size" value="XL">Extra-Large<br>
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Gender:
+            <br>
+            <input type="checkbox" name="gender" value="F">Female<br>
+            <input type="checkbox" name="gender" value="M"> Male<br>
+        </label> 
+        <div>
+        <label>
+            Zipcode:
+            <br>
+            <input type="text" name="zipcode"><br>
+
+        <input type="submit" value="Submit">
+            
+        </label> 
+
+
+
+    </div>
+
+
+
+
+
+</form>
+
+
+{% endblock %}

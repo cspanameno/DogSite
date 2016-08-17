@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Pets</h2>
+    
+
+    {% for pet in pets %}
+
+
+        <div>
+            <div>
+                <h1>{{pet.get('name')['$t']}}</h1>
+            </div>
+            <div>
+                <h1>{{pet.get('age')['$t']}}</h1>
+            </div>
+            <div>
+                <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
+            </div>
+            <a href="/idv_pet/{{ pet.get('id')['$t'] }}"> {{ pet.get('id')['$t'] }}</a>
+        </div>
+
+    {% endfor %}
+    
+
+
+
+
+
+{% endblock %}
