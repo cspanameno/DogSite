@@ -13,21 +13,37 @@
                 <li>{{pet.get('sex')['$t']}}</li>
             </div>
             <div>
-                <li>{{pet['breeds'].get('breed')[1]['$t']}}</li>
+                {% for breed in breeds%}
+                <li>{{ breed.get('$t') }}</li>
+                {% endfor %}
             </div>
             <div>
                 <li> Mixed Breed: {{pet.get('mix')['$t']}}</li>
+            </div>
+            
+
+            
             <div>
-                <ul>{{ pet['contact'].get('address1')['$t']}}</ul>
-                <ul>{{ pet['contact'].get('city')['$t']}}</ul>
-                <ul>{{ pet['contact'].get('phone')['$t']}}</ul>
-                <ul>{{ pet['contact'].get('email')['$t']}}</ul>
+                {% if pet['contact'].get('address1') %}
+                 {{ pet['contact'].get('address1')['$t']}}
+                {% endif %}
             </div>
+           
+
+
+            <div>
+                {% if  pet['contact'].get('city') %}
+                    {{  pet['contact'].get('city')['$t']}}
+                {% endif %}
             </div>
+            
+          
                 <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
             <div>
                  <p>{{pet.get('description')['$t']}}</p>
             </div>
+
+            <a href="#" id="fav" title="[+] Add as favorite">&nbsp;</a>
             
         </div>
 

@@ -3,25 +3,36 @@
 
 <h2>Pets</h2>
     
+    {% if pets %}
 
     {% for pet in pets %}
 
 
         <div>
+            
             <div>
-                <h1>{{pet.get('name')['$t']}}</h1>
+                <h1>{{  ( pet.get('name',{}) ).get('$t')  }}</h1>
+            </div>
+          
+            <div>
+                <h1> {{ ( pet.get('age',{}) ).get('$t') }} </h1>
             </div>
             <div>
-                <h1>{{pet.get('age')['$t']}}</h1>
-            </div>
-            <div>
-                <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
+
+                <img src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}>
             </div>
             <a href="/idv_pet/{{ pet.get('id')['$t'] }}"> {{ pet.get('id')['$t'] }}</a>
         </div>
 
     {% endfor %}
+
+    {%  else %}
+        <div>
+            <h1> no pets found </h1>
+
+        </div>
     
+    {% endif %}
 
 
 

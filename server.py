@@ -127,13 +127,15 @@ def process_form():
     r = search_dogs_api(breed, age, size, gender, zipcode)
 
     pets = r.json()
+
     pprint.pprint(pets)
 
-    return render_template("display_pets.html", pets=pets['petfinder']['pets']['pet'])
+    #Added this since the API sometimes returns a list of dictionaries or a single dictionary
+    if isinstance(pets['petfinder']['pets'].get('pet'), dict):
+        return render_template("display_pets.html", pets=[pets['petfinder']['pets'].get('pet')])
+    else:
+        return render_template("display_pets.html", pets=pets['petfinder']['pets'].get('pet'))
 
-
-    
-    return render_template("results.html")
 
 @app.route('/idv_pet/<int:id>')
 def show_pet(id):
@@ -143,8 +145,14 @@ def show_pet(id):
 
     pet = p.json()
 
+    pprint.pprint(pet)
+    if type(pet['petfinder']['pet']['breeds']['breed']) == type({}):
+        breeds = [pet['petfinder']['pet']['breeds']['breed']]
+    else:
+        breeds = pet['petfinder']['pet']['breeds']['breed']
 
-    return render_template("specific_pet.html", pet=pet['petfinder']['pet'])
+
+    return render_template("specific_pet.html", pet=pet['petfinder']['pet'], breeds=breeds)
 
 
 
