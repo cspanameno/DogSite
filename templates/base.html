@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Pets</title>
+    <script src="https://code.jquery.com/jquery.js"></script>
 </head>
 <body>
 
@@ -10,6 +11,10 @@
     <a href="/logout">Logout</a>
 {% else %}
     <a href="/login">Login</a>
+{% endif %}
+
+{% if "user_id" in session %}
+<a href="/profile"> View Profile </a>
 {% endif %}
 
 <hr>

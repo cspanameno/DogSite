@@ -38,11 +38,17 @@ class Pet(db.Model):
     pet_id= db.Column(db.Integer,
                          autoincrement=True,
                          primary_key=True)
-    breed= db.Column(db.String(100))
+    api_id = db.Column(db.String(100))
+    name = db.Column(db.String(100))
     size = db.Column(db.String(100))
     age = db.Column(db.String(100))
     zipcode = db.Column(db.String(15), nullable=False)
     gender = db.Column(db.String(15))
+    photo_url = db.Column(db.String(128))
+
+    breeds = db.relationship("Breed",
+                         secondary="breed_pets",
+                         backref="pets")
 
 
     def __repr__(self):
@@ -52,8 +58,7 @@ class Pet(db.Model):
                                                  self.breed)
 
 
-
-class User_pet(db.Model):
+class UserPet(db.Model):
     """ Association table to relate pet and users"""
    
     __tablename__ = "user_pets"
@@ -66,8 +71,27 @@ class User_pet(db.Model):
     pet_id= db.Column(db.Integer,
                          db.ForeignKey('pets.pet_id'))
 
-    
-  
+class Breed(db.Model):
+
+    __tablename__ = "breeds"
+
+    breed_id = db.Column(db.Integer,
+                        autoincrement=True,
+                        primary_key=True)
+    breed_name = db.Column(db.String(100))
+
+class BreedPet(db.Model):
+
+    __tablename__ = "breed_pets"
+
+    breed_pet_id = db.Column(db.Integer,
+                        autoincrement=True,
+                        primary_key=True)
+    breed_id = db.Column(db.Integer,
+                        db.ForeignKey('breeds.breed_id'))
+    pet_id = db.Column(db.Integer,
+                         db.ForeignKey('pets.pet_id'))
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""

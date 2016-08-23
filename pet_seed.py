@@ -2,7 +2,7 @@
 
 from sqlalchemy import func
 
-from pet_model import User, Pet, connect_to_db, db
+from pet_model import User, Pet, UserPet, Breed, BreedPet,  connect_to_db, db
 from server import app
 
 
@@ -13,38 +13,48 @@ def load_users():
 
     user = User(first_name="Cindy", last_name="P", email="cindy@gmail.com", 
                       password="baba123", zipcode="94621")
-    # user2 =
 
-    # We need to add to the session or it won't ever be stored
     db.session.add(user)
-    # db.session.add(user2)
-
-        # # provide some sense of progress
-        # if i % 100 == 0:
-        #     print i
-
-    # Once we're done, we should commit our work
+ 
     db.session.commit()
 
 
-def load_pets():
-    """Load pets into database."""
+# def load_pets():
+#     """Load pets into database."""
 
-    print "Pets"
+#     print "Pets"
 
-    pet = Pet(breed="Chihuaha", size="small",
-                      age="baby",
-                      zipcode="94621")
+#     pet = Pet(breed="Chihuaha", size="small",
+#                       age="baby",
+#                       zipcode="94621")
 
-        # We need to add to the session or it won't ever be stored
-    db.session.add(pet)
+#         # We need to add to the session or it won't ever be stored
+#     db.session.add(pet)
 
-    #     # provide some sense of progress
-    # if i % 100 == 0:
-    #         print i
+#     #     # provide some sense of progress
+#     # if i % 100 == 0:
+#     #         print i
 
-    # Once we're done, we should commit our work
+#     # Once we're done, we should commit our work
+#     db.session.commit()
+
+def load_breeds():
+    """Load breeds into database."""
+
+    breeds_file = open('breed_data.txt')
+
+    breeds = breeds_file.read().split(',')
+
+    for breed_name in breeds:
+        breed = Breed(breed_name=breed_name)
+        db.session.add(breed)
+
     db.session.commit()
+
+
+
+
+
 
 
 # def load_ratings():
@@ -104,5 +114,5 @@ if __name__ == "__main__":
     db.create_all()
 
     load_users()
-    load_pets()
     set_val_user_id()
+    load_breeds()

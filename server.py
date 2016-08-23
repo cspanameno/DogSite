@@ -2,10 +2,10 @@
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from pet_model import connect_to_db, db, User, Pet, User_pet
+from pet_model import connect_to_db, db, User, Pet, UserPet, Breed, BreedPet
 
 from testsearch import *
 
@@ -20,6 +20,7 @@ app.secret_key = "ABC"
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
+app.jinja_env.auto_reload = True
 
 
 @app.route('/')
@@ -51,6 +52,7 @@ def process_registration():
                       zipcode=zipcode)
         db.session.add(new_user)
         db.session.commit()
+        print User.user_id
         return redirect("/search_form")
        
     else:
@@ -62,8 +64,6 @@ def process_registration():
 def show_login():
     """Show login form"""
 
-    print "HEY"
-
     return render_template("login_form.html")
 
 @app.route('/login', methods=['POST'])
@@ -74,7 +74,6 @@ def process_login():
 
     user = User.query.filter_by(email=email).first()
     print user
-    print "HELLO"
 
     if not user:
         flash("This email does not exist, please register")
@@ -86,6 +85,7 @@ def process_login():
 
     else:
         session["user_id"] = user.user_id
+        print user.user_id
         flash("Logged in")
         return redirect("/search_form")
 
@@ -102,16 +102,20 @@ def logout():
 def show_profile():
     """show the user's profile page"""
 
-    pass
+    return render_template("profile_page.html")
 
 
 @app.route('/search_form')
 def search_form():
     """show the search form"""
 
-    breeds = save_breeds()
+    breeds = db.session.query(Breed).all()
+    breed_names = []
 
-    return render_template("pet_search_form.html", breeds=breeds)
+    for breed in breeds:
+        breed_names.append(breed.breed_name)
+
+    return render_template("pet_search_form.html", breeds=breed_names)
 
 
 @app.route('/search')
@@ -126,15 +130,23 @@ def process_form():
 
     r = search_dogs_api(breed, age, size, gender, zipcode)
 
-    pets = r.json()
+    result = r.json()
 
-    pprint.pprint(pets)
-
-    #Added this since the API sometimes returns a list of dictionaries or a single dictionary
-    if isinstance(pets['petfinder']['pets'].get('pet'), dict):
-        return render_template("display_pets.html", pets=[pets['petfinder']['pets'].get('pet')])
+    if isinstance(result['petfinder']['pets'].get('pet'), dict):
+        pets = [result['petfinder']['pets'].get('pet')]
     else:
-        return render_template("display_pets.html", pets=pets['petfinder']['pets'].get('pet'))
+        pets = result['petfinder']['pets'].get('pet')
+
+    for pet in pets:
+        if type(pet['breeds']['breed']) == type({}):
+            pet['breeds']['breed'] = [pet['breeds']['breed']]
+        else:
+            pet['breeds']['breed'] = pet['breeds']['breed']
+
+    # pprint.pprint(pets)
+
+   
+    return render_template("display_pets.html", pets=pets)
 
 
 @app.route('/idv_pet/<int:id>')
@@ -145,7 +157,8 @@ def show_pet(id):
 
     pet = p.json()
 
-    pprint.pprint(pet)
+    # pprint.pprint(pet)
+    
     if type(pet['petfinder']['pet']['breeds']['breed']) == type({}):
         breeds = [pet['petfinder']['pet']['breeds']['breed']]
     else:
@@ -156,11 +169,65 @@ def show_pet(id):
 
 
 
-@app.route('/fav')
+@app.route('/fav', methods=['POST'])
 def fav_pet():
     """favorite the pet"""
 
-    pass
+    api_id = request.form.get('petID')
+    age = request.form.get('age')
+    breed_names = request.form.get('breed').rstrip(',').split(',')
+    name = request.form.get('name')
+    size = request.form.get('size')
+    zipcode = request.form.get('zipcode')
+    photo_url = request.form.get('photo')
+    gender = request.form.get('gender')
+
+    user_id = session['user_id']
+
+    #If this pet is in the user-pet table 
+        #Don't add anything 
+    #elif:
+    #   pet in pet table 
+    #       Just add to pet user 
+    #else:
+    #current code add to all tables 
+
+    # pet_exists = db.session.query(UserPet).filter(Pet.api_id == api_id).one().pet_id
+    # select * from user_pets where api_id =  AND user_ID = 
+    existing_pet_record = db.session.query(Pet).filter(Pet.api_id == api_id).first()
+
+    if not existing_pet_record:
+
+        pet = Pet(api_id=api_id, age=age, name=name, size=size, zipcode=zipcode, 
+                  photo_url=photo_url, gender=gender)
+
+        db.session.add(pet)
+        db.session.commit()
+
+        new_pet_id = db.session.query(Pet).filter(Pet.api_id == api_id).one().pet_id
+
+        for breed_name in breed_names:
+            breed_id = db.session.query(Breed).filter(Breed.breed_name == breed_name).one().breed_id
+            breed_pet = BreedPet(breed_id=breed_id, pet_id=new_pet_id)
+            db.session.add(breed_pet)
+            db.session.commit()
+
+
+    pet_record_id = db.session.query(Pet).filter(Pet.api_id == api_id).first().pet_id
+
+    user_pet_record = db.session.query(UserPet).filter(UserPet.pet_id == pet_record_id, UserPet.user_id == user_id).first()
+
+    if user_pet_record:
+        print "ALREADY HERE"
+    else:
+        user_pet = UserPet(user_id=user_id, pet_id=pet_record_id)
+        db.session.add(user_pet)
+        db.session.commit()
+
+
+    return jsonify({"status": "success", "petAdded": api_id})
+
+
 
 @app.route('/unfav')
 def unfav_pet():

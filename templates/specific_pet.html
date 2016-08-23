@@ -13,7 +13,7 @@
                 <li>{{pet.get('sex')['$t']}}</li>
             </div>
             <div>
-                {% for breed in breeds%}
+                {% for breed in breeds %}
                 <li>{{ breed.get('$t') }}</li>
                 {% endfor %}
             </div>
@@ -29,7 +29,6 @@
                 {% endif %}
             </div>
            
-
 
             <div>
                 {% if  pet['contact'].get('city') %}

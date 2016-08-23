@@ -49,6 +49,9 @@ def save_breeds():
 
     # print type(b)
 
+# def normalize(data):
+#     return data
+
 def search_dogs_api(breed, age, size, gender, zipcode):
 
     api_key = os.environ["API_KEY"]
@@ -58,7 +61,7 @@ def search_dogs_api(breed, age, size, gender, zipcode):
 
     dogs = requests.get("http://api.petfinder.com/pet.find", params=payload)
     
-
+    # dogs = normalize(dogs)
     
     return dogs
 

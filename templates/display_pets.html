@@ -3,6 +3,7 @@
 
 <h2>Pets</h2>
     
+    
     {% if pets %}
 
     {% for pet in pets %}
@@ -11,28 +12,86 @@
         <div>
             
             <div>
-                <h1>{{  ( pet.get('name',{}) ).get('$t')  }}</h1>
+                <h1>{{  (pet.get('contact', {})).get('zip', {}).get('$t') }}</h1>
+            </div> 
+
+            <div>
+                <h1>{% for breed in pet['breeds']['breed'] %}
+                    {{ breed.get('$t') }},
+                {% endfor %}</h1>
+            </div>  
+            
+            <div>
+                <button class="pet-fav" 
+                data-petid= "{{ pet.get('id')['$t'] }}" 
+                data-age="{{ ( pet.get('age',{}) ).get('$t') }}" 
+                data-breed= "{% for breed in pet['breeds']['breed'] %}{{ breed.get('$t') }},{% endfor %}"
+                data-name= "{{ ( pet.get('name',{}) ).get('$t') }}"
+                data-size= "{{ ( pet.get('size',{}) ).get('$t') }}"
+                data-zipcode= "{{ (pet.get('contact', {})).get('zip', {}).get('$t') }}"
+                data-photo= "{{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}"
+                data-gender= "{{ ( pet.get('sex',{}) ).get('$t') }}"
+
+                type="button">Favorite Me!</button>
             </div>
           
             <div>
                 <h1> {{ ( pet.get('age',{}) ).get('$t') }} </h1>
             </div>
             <div>
-
-                <img src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}>
+                 <img src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}>
             </div>
+            
             <a href="/idv_pet/{{ pet.get('id')['$t'] }}"> {{ pet.get('id')['$t'] }}</a>
+        
         </div>
 
     {% endfor %}
 
     {%  else %}
         <div>
-            <h1> no pets found </h1>
+            <h1> Sorry. No pets found.  </h1>
 
         </div>
     
     {% endif %}
+
+
+<script>
+    "use strict";
+
+    function updatedFav(results) {
+        console.log(results)
+
+    }
+
+    function addFav(evt) {
+        var petID = $(this).data('petid');
+        // debugger;
+
+        var age = $(this).data('age');
+        var breed = $(this).data('breed');
+        var name = $(this).data('name');
+        var size = $(this).data('size');
+        var zipcode = $(this).data('zipcode');
+        var photo = $(this).data('photo');
+        var gender = $(this).data('gender');
+
+
+
+        $.post("/fav", {'petID': petID, 'age': age, 'breed': breed, 'name': name, 'size': size, 'zipcode': zipcode, 'photo': photo, 'gender': gender},  updatedFav);
+
+        console.log(petID)
+
+    }
+
+
+    $(".pet-fav").on("click", addFav);
+
+    // implementation of AJAX using JQuery
+</script>
+
+
 
 
 
