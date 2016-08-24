@@ -53,7 +53,8 @@ def process_registration():
         db.session.add(new_user)
         db.session.commit()
         print User.user_id
-        return redirect("/search_form")
+        return redirect("/login")
+        
        
     else:
         flash("You already have a profile, please sign in")
@@ -102,7 +103,38 @@ def logout():
 def show_profile():
     """show the user's profile page"""
 
-    return render_template("profile_page.html")
+    user_id = session['user_id']
+
+    #returns a list of objects
+    # user_pets = db.session.query(UserPet).filter(UserPet.user_id == user_id).all()
+
+    # pets = []
+
+    # for pet in user_pets:
+    #     pets.append(pet.pet_id)
+
+    # select * 
+    # FROM pets p 
+    # JOIN user_pets up on p.pet_id = up.pet_id
+    # WHERE up.user_id = 1;
+
+    # pets = Session.query(UserPet,Pet).filter(UserPet.pet_id == Pet.pet_id).
+    # filter(UserPet.user_id == user_id).all()
+    
+    # print pets
+    # one_pet = db.session.query(Pet).filter(Pet.pet_id == pets).all()
+
+    pets = db.session.query(Pet).join(UserPet).filter(UserPet.user_id == user_id).all()
+
+    print pets
+
+
+    # select * from UserPet where user_id=user_id;
+
+    #need to select all pets from user pet
+    # get info for each pet and display 
+
+    return render_template("profile_page.html", pets=pets)
 
 
 @app.route('/search_form')
@@ -157,7 +189,7 @@ def show_pet(id):
 
     pet = p.json()
 
-    # pprint.pprint(pet)
+    pprint.pprint(pet)
     
     if type(pet['petfinder']['pet']['breeds']['breed']) == type({}):
         breeds = [pet['petfinder']['pet']['breeds']['breed']]
@@ -184,16 +216,8 @@ def fav_pet():
 
     user_id = session['user_id']
 
-    #If this pet is in the user-pet table 
-        #Don't add anything 
-    #elif:
-    #   pet in pet table 
-    #       Just add to pet user 
-    #else:
-    #current code add to all tables 
-
-    # pet_exists = db.session.query(UserPet).filter(Pet.api_id == api_id).one().pet_id
-    # select * from user_pets where api_id =  AND user_ID = 
+    print user_id
+ 
     existing_pet_record = db.session.query(Pet).filter(Pet.api_id == api_id).first()
 
     if not existing_pet_record:

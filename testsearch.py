@@ -56,7 +56,7 @@ def search_dogs_api(breed, age, size, gender, zipcode):
 
     api_key = os.environ["API_KEY"]
 
-    payload = {'breed': breed, 'age': age, 'size':size, 'sex':gender, 'location':zipcode, 'key': api_key, 'format': 'json' }
+    payload = {'breed': breed, 'age': age, 'size':size, 'sex':gender, 'location':zipcode, 'key': api_key, 'format': 'json'}
 
 
     dogs = requests.get("http://api.petfinder.com/pet.find", params=payload)

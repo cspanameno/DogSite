@@ -2,21 +2,32 @@
 {% block content %}
 
 <h2>Profile Page</h2>
+   {% for pet in pets %}
+     <div>
+        <h1>Name: {{ pet.name }} </h1> 
+     </div>
 
+     <div>
+        <p>Gender: {{ pet.gender }}</p>
+     </div>
 
+     <div>
+        <p>Zipcode: {{ pet.zipcode }}</p>
+     </div>
+
+     <div>
+        <p>Size: {{ pet.size }}</p>
+     </div>
+     <img src={{ pet.photo_url }}>
+
+     <br>
+
+     <a href="/idv_pet/{{ pet.api_id }}"> See more about me</a>
     
+    {% endfor %}
 
-    <div>
-
-
-    </div>
-
+{% endblock %}
 
 
        
 
-
-
-
-
-{% endblock %}

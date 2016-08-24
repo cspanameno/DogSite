@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Pets</h2>
+<h1>Adoptable Dogs</h1>
     
     
     {% if pets %}
 
     {% for pet in pets %}
-
-
-        <div>
+       <div>
             
             <div>
-                <h1>{{  (pet.get('contact', {})).get('zip', {}).get('$t') }}</h1>
+                <h2>Name: {{ ( pet.get('name',{}) ).get('$t') }}</h2>
             </div> 
 
             <div>
-                <h1>{% for breed in pet['breeds']['breed'] %}
+                <p> Breeds: {% for breed in pet['breeds']['breed'] %}
                     {{ breed.get('$t') }},
-                {% endfor %}</h1>
+                {% endfor %}</p>
             </div>  
-            
+
+            <div>
+                <p> Age: {{ ( pet.get('age',{}) ).get('$t') }} </p>
+            </div>
+            <br>
             <div>
                 <button class="pet-fav" 
                 data-petid= "{{ pet.get('id')['$t'] }}" 
@@ -34,17 +36,16 @@
 
                 type="button">Favorite Me!</button>
             </div>
+            <br>
+            <a href="/idv_pet/{{ pet.get('id')['$t'] }}"> Check me out! </a>
           
-            <div>
-                <h1> {{ ( pet.get('age',{}) ).get('$t') }} </h1>
-            </div>
+            
             <div>
                  <img src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}>
+
             </div>
             
-            <a href="/idv_pet/{{ pet.get('id')['$t'] }}"> {{ pet.get('id')['$t'] }}</a>
         
-        </div>
 
     {% endfor %}
 
@@ -90,11 +91,6 @@
 
     // implementation of AJAX using JQuery
 </script>
-
-
-
-
-
 
 
 {% endblock %}

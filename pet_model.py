@@ -55,7 +55,7 @@ class Pet(db.Model):
         """Provide helpful representation when printed."""
 
         return "<Pet pet_id=%s breed=%s>" % (self.pet_id,
-                                                 self.breed)
+                                                 self.breeds)
 
 
 class UserPet(db.Model):

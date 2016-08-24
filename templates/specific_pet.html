@@ -1,31 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>Individual Pet</h2>
+<h2>Check me out</h2>
     
 
     
         <div>
             <div>
-                <h1>{{pet.get('name')['$t']}}</h1>
-            </div>
-            <div>
-                <li>{{pet.get('sex')['$t']}}</li>
-            </div>
-            <div>
-                {% for breed in breeds %}
-                <li>{{ breed.get('$t') }}</li>
-                {% endfor %}
-            </div>
-            <div>
-                <li> Mixed Breed: {{pet.get('mix')['$t']}}</li>
+                <h1>Name: {{pet.get('name')['$t']}}</h1>
             </div>
             
+            <div>
+                Gender: {{ pet.get('sex')['$t'] }}
+            </div>
+            
+            <div>
+                Mixed Breed: {{pet.get('mix')['$t']}}
+            </div>
 
+            <div>
+                Breeds:{% for breed in breeds %}<li>{{ breed.get('$t') }}</li>
+                {% endfor %}
+            </div>
             
             <div>
                 {% if pet['contact'].get('address1') %}
-                 {{ pet['contact'].get('address1')['$t']}}
+                 Address: {{ pet['contact'].get('address1')['$t']}}
                 {% endif %}
             </div>
            
@@ -35,11 +35,31 @@
                     {{  pet['contact'].get('city')['$t']}}
                 {% endif %}
             </div>
+
+              <div>
+                {% if  pet['contact'].get('email') %}
+                    Email: {{  pet['contact'].get('email')['$t']}}
+                {% endif %}
+            </div>
+
+             <div>
+                {% if  pet['contact'].get('phone') %}
+                    Phone Number: {{  pet['contact'].get('phone')['$t']}}
+                {% endif %}
+            </div>
+
+             <div>
+                {% if  pet['contact'].get('zip') %}
+                    Zipcode: {{  pet['contact'].get('zip')['$t']}}
+                {% endif %}
+            </div>
             
-          
-                <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
+                {% if pet.get('media', {}).get('photos',{}).get('photo')  %}
+                    <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
+                {% endif %}
+                
             <div>
-                 <p>{{pet.get('description')['$t']}}</p>
+                 <p>{{pet.get('description').get('$t','')}}</p>
             </div>
 
             <a href="#" id="fav" title="[+] Add as favorite">&nbsp;</a>
