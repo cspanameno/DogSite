@@ -3,12 +3,13 @@
 
 <h1>Adoptable Dogs</h1>
 
-{{ zipcode }}
+<div id="googleMap" style="width:500px;height:380px;"></div>
     
     
     {% if pets %}
 
     {% for pet in pets %}
+
        <div>
             
             <div>
@@ -26,7 +27,7 @@
             </div>
             <br>
             <div>
-                <button class="pet-fav" 
+                <button class="pet-fav {{ pet['fav'] }}" 
                 data-petid= "{{ pet.get('id')['$t'] }}" 
                 data-age="{{ ( pet.get('age',{}) ).get('$t') }}" 
                 data-breed= "{% for breed in pet['breeds']['breed'] %}{{ breed.get('$t') }},{% endfor %}"
@@ -35,6 +36,7 @@
                 data-zipcode= "{{ (pet.get('contact', {})).get('zip', {}).get('$t') }}"
                 data-photo= "{{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}"
                 data-gender= "{{ ( pet.get('sex',{}) ).get('$t') }}"
+                data-fav =  "{{ pet['fav'] }}"
 
                 type="button">Favorite Me!</button>
             </div>
@@ -60,7 +62,7 @@
     
     {% endif %}
 
-    <div id="googleMap" style="width:500px;height:380px;"></div>
+    <!-- <div id="googleMap" style="width:500px;height:380px;"></div> -->
 
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBMF6RlD6sQICD69YtAjoGcQpfgB5nUIXY"></script>
 
@@ -103,7 +105,6 @@
 
     });
 
-    // prop('disabled',true)
 
     // implementation of AJAX using JQuery
 
@@ -111,7 +112,7 @@
    
     var zip = zipcode.toString()
     var address = zip;
-    console.log(address)
+    // console.log(address)
 
     var pet = new google.maps.Geocoder();
 
@@ -119,13 +120,14 @@
         function(results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
              var lat = results[0].geometry.location.lat();
-             console.log(lat);
+             // console.log(lat);
              var lng = results[0].geometry.location.lng();
-             console.log(lng)  
+             // console.log(lng)  
              petMarker(lat,lng, map);
             }
           else {
-            alert("Geocode was not successful for the following reason: " + status);
+            // alert("Geocode was not successful for the following reason: " + status);
+            console.log("not successful")
           }
           return lat, lng;    
 
@@ -142,11 +144,13 @@
 
 function initialize() {
 
-console.log("in initialize")
+// console.log("in initialize")
 
   var mapProp = {
-    center:new google.maps.LatLng(37.0902,-95.7129),
-    zoom:3,
+    // center:new google.maps.LatLng(37.0902,-95.7129),
+    center:new google.maps.LatLng(37.7347,-122.2143),
+    // zoom:3,
+    zoom:5,
     mapTypeId:google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
@@ -157,7 +161,7 @@ console.log("in initialize")
 
 function petMarker(lat, lng, map) {
 
-    console.log("Got to petMarker")
+    // console.log("Got to petMarker")
 
      var marker = new google.maps.Marker({
           position: {lat: lat, lng: lng},
@@ -283,8 +287,23 @@ mapsFunc();
 
 // getZips()
 
+// function markFavs() {
+//       $(this).prop("disabled", true);
+//       $(this).css("background-color", "red")
+
+//     }
 
 
+$(document).ready( function() {
+    var buttons = $('.has-been-favorited').prop("disabled", true).css("background-color", "red");
+    // console.log(buttons);
+    // for (var i = 0; i < buttons.length; i++) {
+    //   var singleButton = buttons[i];
+    //   console.log(singleButton.data('fav'));
+    //   console.log("we are here")
+  // }
+
+});
 
 
 </script>

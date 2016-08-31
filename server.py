@@ -136,10 +136,7 @@ def process_form():
     r = search_dogs_api(breed, age, size, gender, zipcode)
 
     result = r.json()
-
-    print result
-
-    # pets = result.get('petfinder', []).get('pets', []).get('pet', [])
+ 
 
     if isinstance(result['petfinder']['pets'].get('pet'), dict):
         pets = [result['petfinder']['pets'].get('pet')]
@@ -147,14 +144,36 @@ def process_form():
         pets = result['petfinder']['pets'].get('pet')
 
 
+    user_id = session['user_id']
+    favorite_pets = db.session.query(Pet.api_id).join(UserPet).filter(UserPet.user_id == user_id).all()
+    
+    fav_pets = []
+    for fav_pet in favorite_pets:
+        fav_pets.append(fav_pet[0])
 
+    print fav_pets
     for pet in pets:
         if type(pet['breeds']['breed']) == type({}):
             pet['breeds']['breed'] = [pet['breeds']['breed']]
         else:
             pet['breeds']['breed'] = pet['breeds']['breed']
+        
+        # print type(favorite_pets[0])
+        if str(pet.get('id')['$t']) in fav_pets:
+            pet['fav'] = 'has-been-favorited'
+        else:
+            pet['fav'] = 'not-favorited'
+        # print "***********\n\n\n"
+        # print str(pet.get('id')['$t'])
+        # print "\n\n\n***********"
 
-    pprint.pprint(pets)
+
+    
+
+    
+
+
+    
 
    
     return render_template("display_pets.html", pets=pets, zipcode=zipcode)
@@ -220,9 +239,8 @@ def fav_pet():
 
     user_pet_record = db.session.query(UserPet).filter(UserPet.pet_id == pet_record_id, UserPet.user_id == user_id).first()
 
-    if user_pet_record:
-        print "ALREADY HERE"
-    else:
+    if not user_pet_record:
+
         user_pet = UserPet(user_id=user_id, pet_id=pet_record_id)
         db.session.add(user_pet)
         db.session.commit()
@@ -242,6 +260,6 @@ def unfav_pet():
 if __name__ == "__main__":
     app.debug = True
     connect_to_db(app)
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
     app.run(host="0.0.0.0")
