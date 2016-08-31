@@ -1,6 +1,96 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% block head %}
+
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/homepage.css">
+    
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBMF6RlD6sQICD69YtAjoGcQpfgB5nUIXY"></script>
+
+<script>
+
+    
+
+
+
+function zipLat(zipcode) {
+   
+    var address = zipcode;
+    
+
+    var pet = new google.maps.Geocoder();
+   
+
+    pet.geocode( { 'address': address}, 
+        function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+             lat = results[0].geometry.location.lat();
+             // console.log(lat);
+             lng = results[0].geometry.location.lng();
+             // console.log(lng);
+             // return [lat, lng];
+            }
+          else {
+            alert("Geocode was not successful for the following reason: " + status);
+          }
+          // return [lat, lng];    
+
+      });
+
+    console.log('inside ziplat');
+
+    // var t = 'nothing';
+
+    // setTimeout(   function(){ t = lat; console.log(t);}   , 3000);
+    
+}
+
+
+
+function initialize(lat,lng) {
+
+
+  var mapProp = {
+    center:new google.maps.LatLng(lat,lng),
+    zoom:5,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  var marker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          map: map,
+          title: 'Hello World!'
+        });
+
+}
+
+
+
+function mapsFunc(){
+    google.maps.event.addDomListener(window, 'load', initialize(lat,lng));
+
+
+}
+
+
+
+
+var lat = '';
+var lng = '';
+zipLat('94080');
+setTimeout('mapsFunc()', 4000);
+
+
+
+</script>
+
+
+{% endblock %}
+
+{% block body %}
   <h1>Welcome to DogSite</h1>
 
   <h2>Register</h2>
@@ -8,5 +98,11 @@
 
   <h2>Login</h2>
   <p><a href="/login">Login</a></p>
+
+  <div id="googleMap" style="width:500px;height:380px;"></div>
+
+{% endblock %}
+
+
 
 {% endblock %}

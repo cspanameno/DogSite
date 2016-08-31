@@ -1,0 +1,20 @@
+/* DogSite Homepage */
+
+/* The body has an iamge that spans the entire size of the page.
+   Everything is centered and in white. */
+
+body {
+    background-color: #FFB6C1;
+   
+}
+
+/* site-wrapper and site-wrapper-inner are to vertically center content using
+   table/table-cell vertical centering. */
+
+/* The footer always appears at the bottom of the browser window. */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;  /* required because fixed position */
+}

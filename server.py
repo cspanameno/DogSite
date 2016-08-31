@@ -52,7 +52,7 @@ def process_registration():
                       zipcode=zipcode)
         db.session.add(new_user)
         db.session.commit()
-        print User.user_id
+        # print User.user_id
         return redirect("/login")
         
        
@@ -74,7 +74,7 @@ def process_login():
     password = request.form.get("password")
 
     user = User.query.filter_by(email=email).first()
-    print user
+    # print user
 
     if not user:
         flash("This email does not exist, please register")
@@ -105,34 +105,7 @@ def show_profile():
 
     user_id = session['user_id']
 
-    #returns a list of objects
-    # user_pets = db.session.query(UserPet).filter(UserPet.user_id == user_id).all()
-
-    # pets = []
-
-    # for pet in user_pets:
-    #     pets.append(pet.pet_id)
-
-    # select * 
-    # FROM pets p 
-    # JOIN user_pets up on p.pet_id = up.pet_id
-    # WHERE up.user_id = 1;
-
-    # pets = Session.query(UserPet,Pet).filter(UserPet.pet_id == Pet.pet_id).
-    # filter(UserPet.user_id == user_id).all()
-    
-    # print pets
-    # one_pet = db.session.query(Pet).filter(Pet.pet_id == pets).all()
-
     pets = db.session.query(Pet).join(UserPet).filter(UserPet.user_id == user_id).all()
-
-    print pets
-
-
-    # select * from UserPet where user_id=user_id;
-
-    #need to select all pets from user pet
-    # get info for each pet and display 
 
     return render_template("profile_page.html", pets=pets)
 
@@ -164,10 +137,16 @@ def process_form():
 
     result = r.json()
 
+    print result
+
+    # pets = result.get('petfinder', []).get('pets', []).get('pet', [])
+
     if isinstance(result['petfinder']['pets'].get('pet'), dict):
         pets = [result['petfinder']['pets'].get('pet')]
     else:
         pets = result['petfinder']['pets'].get('pet')
+
+
 
     for pet in pets:
         if type(pet['breeds']['breed']) == type({}):
@@ -175,10 +154,10 @@ def process_form():
         else:
             pet['breeds']['breed'] = pet['breeds']['breed']
 
-    # pprint.pprint(pets)
+    pprint.pprint(pets)
 
    
-    return render_template("display_pets.html", pets=pets)
+    return render_template("display_pets.html", pets=pets, zipcode=zipcode)
 
 
 @app.route('/idv_pet/<int:id>')

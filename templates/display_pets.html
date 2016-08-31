@@ -2,6 +2,8 @@
 {% block content %}
 
 <h1>Adoptable Dogs</h1>
+
+{{ zipcode }}
     
     
     {% if pets %}
@@ -44,6 +46,7 @@
                  <img src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}>
 
             </div>
+
             
         
 
@@ -57,9 +60,13 @@
     
     {% endif %}
 
+    <div id="googleMap" style="width:500px;height:380px;"></div>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBMF6RlD6sQICD69YtAjoGcQpfgB5nUIXY"></script>
 
 <script>
     "use strict";
+    // console.log("Anything")
 
     function updatedFav(results) {
         console.log(results)
@@ -82,15 +89,204 @@
 
         $.post("/fav", {'petID': petID, 'age': age, 'breed': breed, 'name': name, 'size': size, 'zipcode': zipcode, 'photo': photo, 'gender': gender},  updatedFav);
 
-        console.log(petID)
+        // console.log(petID)
 
     }
 
 
     $(".pet-fav").on("click", addFav);
 
-    // implementation of AJAX using JQuery
-</script>
+    $(".pet-fav").on("click", function(event) {
+      $(event.target).prop("disabled", true);
+      $(event.target).css("background-color", "red")
 
+
+    });
+
+    // prop('disabled',true)
+
+    // implementation of AJAX using JQuery
+
+    function zipLat(zipcode, map) {
+   
+    var zip = zipcode.toString()
+    var address = zip;
+    console.log(address)
+
+    var pet = new google.maps.Geocoder();
+
+    pet.geocode( {'address': address}, 
+        function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+             var lat = results[0].geometry.location.lat();
+             console.log(lat);
+             var lng = results[0].geometry.location.lng();
+             console.log(lng)  
+             petMarker(lat,lng, map);
+            }
+          else {
+            alert("Geocode was not successful for the following reason: " + status);
+          }
+          return lat, lng;    
+
+      });
+
+    // console.log('inside ziplat');
+
+    // var t = 'nothing';
+
+    // setTimeout(   function(){ t = lat; console.log(t);}   , 3000);
+    
+}
+
+
+function initialize() {
+
+console.log("in initialize")
+
+  var mapProp = {
+    center:new google.maps.LatLng(37.0902,-95.7129),
+    zoom:3,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  return map;
+
+}
+
+function petMarker(lat, lng, map) {
+
+    console.log("Got to petMarker")
+
+     var marker = new google.maps.Marker({
+          position: {lat: lat, lng: lng},
+          map: map,
+          title: 'Hello World!'
+        });
+
+    marker.setMap(map)
+
+
+}
+
+
+function mapsFunc(){
+    google.maps.event.addDomListener(window, 'load', function () {
+     var map =  initialize();
+      // var latlngs = [];
+
+
+      $.each($('.pet-fav'), function (i, button){
+
+          var zipcode = $(button).data('zipcode');
+          // console.log
+          zipLat(zipcode, map);
+          // latlngs.push(latLong);
+          // console.log(latLong);
+
+
+      });
+      // for (var i = 0; i < latlngs.length; i++) {
+      //   console.log('Inside for loop')
+        // var ll = latlngs[i];
+        // var zipStr = zip.toString();
+        
+      
+
+  });
+
+    // console.log('**************last lat lng values****************');
+    // console.log(lat);
+    // console.log(lng);
+    // console.log('*************************************************');
+}
+
+mapsFunc();
+
+
+
+
+// var lat = '';
+// var lng = '';
+// zipLat('{{ zipcode }}');
+
+
+
+// setTimeout('mapsFunc()', 4000);
+
+// function getZips(){
+
+// var buttons = $(this).data('zipcode');
+
+//empty array, append each latlong from zip
+
+// var listZips = [];
+
+
+// $.each($('.pet-fav'), function (i, button){
+
+//     var zipcode = $(button).data('zipcode');
+//     // console.log
+//     listZips.push(zipcode);
+//     var latLong = zipLat('zipcode');
+//     // console.log(latLong);
+
+// });
+
+
+
+
+
+// console.log(listZips)
+
+// for (var i = 0; i < listZips.length; i++) {
+//     console.log('Inside for loop')
+//     var zip = listZips[i];
+//     var zipStr = zip.toString();
+//     // console.log(zip)
+//     // setTimeout(zipLat(zipStr), 4000);
+//     // setTimeout(petMarker(lat,lng,map), 1000);
+//     // setTimeout(mapsFunc(), 8000);
+//     // zipLat(zipStr);
+//     console.log('after petLatLng is called')
+//     console.log(petLatlng)
+
+// }
+// var latLong = zipLat('listZips');
+
+
+
+
+
+
+// console.log(buttons)
+// console.log(typeof(buttons))
+
+// var pets = ["{% for pet in pets %}{{ (pet.get('contact', {})).get('zip', {}).get('$t') }}{% endfor %}"];
+// console.log(pets)
+
+// var pets = ['{{ pets }}']
+// console.log(pets)
+// console.log(typeof(pets))
+
+
+
+ 
+// for (var i = 0; i < buttons.length; i++) {
+//     var singleButton = buttons[i];
+//     console.log(singleButton.data('zipcode'))
+// }
+
+// }
+
+
+// getZips()
+
+
+
+
+
+</script>
 
 {% endblock %}
