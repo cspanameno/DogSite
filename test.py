@@ -1,36 +1,12 @@
-import unittest
-
-from party import app
-from model import db, example_data, connect_to_db
-
-
-class PartyTests(unittest.TestCase):
-    """Tests for my party site."""
-
-    def setUp(self):
-        self.client = app.test_client()
-        app.config['TESTING'] = True
-
-    def test_homepage(self):
-        result = self.client.get("/")
-        self.assertIn("board games, rainbows, and ice cream sundaes", result.data)
-
-    def test_no_rsvp_yet(self):
-        result = self.client.get("/")
-        self.assertIn("Please RSVP", result.data)
-        self.assertNotIn("Party Details", result.data)
-
-    def test_rsvp(self):
-        result = self.client.post("/rsvp",
-                                  data={'name': "Jane", 'email': "jane@jane.com"},
-                                  follow_redirects=True)
-        self.assertIn("Yay!", result.data)
-        self.assertIn("Party Details", result.data)
-        self.assertNotIn("Please RSVP", result.data)
+import json
+from unittest import TestCase
+from pet_model import User, Pet,UserPet, Breed, BreedPet, connect_to_db, db, example_data
+from server import app
+import server
 
 
-class PartyTestsDatabase(unittest.TestCase):
-    """Flask tests that use the database."""
+class FlaskTestsBasic(TestCase):
+    """Flask tests."""
 
     def setUp(self):
         """Stuff to do before every test."""
@@ -41,8 +17,25 @@ class PartyTestsDatabase(unittest.TestCase):
         # Show Flask errors that happen during tests
         app.config['TESTING'] = True
 
+    def test_index(self):
+        """Test homepage page."""
+
+        result = self.client.get("/")
+        self.assertIn("Welcome", result.data)
+
+
+class FlaskTestsDatabase(TestCase):
+    """Flask tests that use the database."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        # Get the Flask test client
+        self.client = app.test_client()
+        app.config['TESTING'] = True
+
         # Connect to test database
-        connect_to_db(app, "postgresql:///testdb")
+        connect_to_db(app, "postgresql:///testpetsdb")
 
         # Create tables and add sample data
         db.create_all()
@@ -54,12 +47,74 @@ class PartyTestsDatabase(unittest.TestCase):
         db.session.close()
         db.drop_all()
 
-    def test_games(self):
-        """Test departments page."""
+    def test_register_form(self):
+        """Test register page."""
 
-        result = self.client.get("/games")
-        self.assertIn("Power Grid", result.data)
+        result = self.client.get("/register")
+        self.assertIn("Register", result.data)
+
+
+    def test_login_form(self):
+        """Test login page."""
+
+        result = self.client.get("/login")
+        self.assertIn("email", result.data)
+
+
+    # def test_login(self):
+    #     """Test login page."""
+
+    #     result = self.client.post("/login", 
+    #                               data={"user_id": "cindy@gmail.com", "password": "baba123"},
+    #                               follow_redirects=True)
+    #     self.assertIn("You are a valued user", result.data)
+
+
+class FlaskTestsLoggedIn(TestCase):
+    """Flask tests with user logged in to session."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'key'
+        self.client = app.test_client()
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['user_id'] = 1
+
+    # def test_search_page(self):
+    #     """Test search page."""
+
+    #     result = self.client.get("/search_form")
+    #     self.assertIn("Breed", result.data)
+
+    # def test_favorites_page(self):
+    #     """Test favorites page."""
+
+    #     result = self.client.get("/search_form")
+    #     self.assertIn("favorites", result.data)
+
+
+class FlaskTestsLoggedOut(TestCase):
+    """Flask tests with user logged in to session."""
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    # def test_important_page(self):
+    #     """Test that user can't see important page when logged out."""
+
+    #     result = self.client.get("/important", follow_redirects=True)
+    #     self.assertNotIn("You are a valued user", result.data)
+    #     self.assertIn("You must be logged in", result.data)
 
 
 if __name__ == "__main__":
+    import unittest
+
     unittest.main()

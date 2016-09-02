@@ -1,4 +1,4 @@
-"""Pet site"""
+"""DogSite"""
 
 from jinja2 import StrictUndefined
 
@@ -99,9 +99,9 @@ def logout():
     return redirect("/")
 
 
-@app.route('/profile')
+@app.route('/favorites')
 def show_profile():
-    """show the user's profile page"""
+    """show the user's favorites"""
 
     user_id = session['user_id']
 
@@ -167,15 +167,6 @@ def process_form():
         # print str(pet.get('id')['$t'])
         # print "\n\n\n***********"
 
-
-    
-
-    
-
-
-    
-
-   
     return render_template("display_pets.html", pets=pets, zipcode=zipcode)
 
 
@@ -247,14 +238,6 @@ def fav_pet():
 
 
     return jsonify({"status": "success", "petAdded": api_id})
-
-
-
-@app.route('/unfav')
-def unfav_pet():
-    """unfavorite the pet"""
-
-    pass
 
 
 if __name__ == "__main__":

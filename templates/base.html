@@ -18,14 +18,15 @@
 
 {% if "user_id" in session %}
     <a href="/logout">Logout</a>
-{% else %}
-    <a href="/login">Login</a>
 {% endif %}
 
 {% if "user_id" in session %}
-<a href="/profile"> View Favorites </a>
+<a href="/favorites">Favorites </a>
 {% endif %}
 
+{% if "user_id" in session %}
+<a href="/search_form"> Search Dogs </a>
+{% endif %}
 <hr>
 
 {% for flash in get_flashed_messages() %}

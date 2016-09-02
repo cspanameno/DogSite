@@ -99,16 +99,40 @@ class BreedPet(db.Model):
         return "<User_pets user_id=%s pet_id=%s >" % (self.user_id,
                                                  self.pet_id)
 
+def example_data():
+    """Create some sample data."""
 
+    # In case this is run more than once, empty out existing data
+    User.query.delete()
+    Pet.query.delete()
+    UserPet.query.delete()
+    Breed.query.delete()
+    BreedPet.query.delete()
+
+    breed1 = Breed(breed_id=1, breed_name="Chihuahua")
+    user1 = User(user_id=1, first_name="Cindy", last_name="P", email="cindy@gmail.com", 
+                      password="baba123", zipcode="94621")
+    pet1 = Pet(pet_id=1, api_id="174849", age="Young", name="Roxy", size="S", zipcode="94621", 
+                  photo_url="http://photos.petfinder.com/photos/pets/35822716/1/?bust=1469924582&width=500&-x.jpg", 
+                   gender="F")
+       
+    # breedpet1 = BreedPet(pet_id=1)
+
+
+    db.session.add_all([breed1, user1, pet1])
+    db.session.commit()
+    fav1 = UserPet(fav_id=1, user_id=1, pet_id=1)
+    db.session.add(fav1)
+    db.session.commit()
 
 
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri="postgresql:///pets"):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///pets'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     db.app = app
     db.init_app(app)
 
