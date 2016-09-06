@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<h2>Check me out</h2>
-    
-
-    
-        <div>
+<link rel="stylesheet" href="/static/css/specific-pet.css">
+     
+        
             <div>
-                <h1>Name: {{pet.get('name')['$t']}}</h1>
+                <h1 id="name">{{pet.get('name')['$t']}}</h1>
             </div>
-            
+    <div class="row">
+        <div class="col-xs-4 col-md-4 col-lg-6">
+        {% if pet.get('media', {}).get('photos',{}).get('photo')  %}
+                    <img id="photo" src={{pet.get('media')['photos']['photo'][2]['$t']}}>
+                {% endif %}
+        </div>
+        <div id="information" class="col-xs-12 col-md-6 col-lg-4">
             <div>
-                Gender: {{ pet.get('sex')['$t'] }}
+                <h5>Gender: {{ pet.get('sex')['$t'] }}</h5>
             </div>
             
             <div>
@@ -29,7 +32,6 @@
                 {% endif %}
             </div>
            
-
             <div>
                 {% if  pet['contact'].get('city') %}
                     {{  pet['contact'].get('city')['$t']}}
@@ -52,19 +54,16 @@
                 {% if  pet['contact'].get('zip') %}
                     Zipcode: {{  pet['contact'].get('zip')['$t']}}
                 {% endif %}
-            </div>
-            
-                {% if pet.get('media', {}).get('photos',{}).get('photo')  %}
-                    <img src={{pet.get('media')['photos']['photo'][2]['$t']}}>
-                {% endif %}
-                
-            <div>
-                 <p>{{pet.get('description').get('$t','')}}</p>
-            </div>
-
-            <a href="#" id="fav" title="[+] Add as favorite">&nbsp;</a>
+            </div>          
             
         </div>
+        
+    </div>
+                
+            <div id="description"class="col-xs-12 col-md-6 col-lg-12">
+                <h3>Description</h3>
+                 <p>{{pet.get('description').get('$t','')}}</p>
+            </div>
 
 
     

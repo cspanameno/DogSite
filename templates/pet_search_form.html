@@ -1,65 +1,59 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="/search" method="GET">
-    
-    <div>
-        <label>
-            Breed:
-             <select name="breed">
-                {% for breed in breeds %}
-              <option value="{{ breed }}">{{ breed }} </option>
-              {% endfor %}
-            </select>
-        </label>    
+<link rel="stylesheet" href="/static/css/search-form.css">
+
+<div class="container">
+    <div class="row">
+        <div id="info" class="col-md-6 col-md-offset-3">
+            <form action="/search" method="GET">            
+                <div>
+                    <label>
+                        <h4> Breed:</h4>
+                         <select name="breed">
+                            {% for breed in breeds %}
+                          <option value="{{ breed }}">{{ breed }} </option>
+                            {% endfor %}
+                        </select>
+                    </label>    
+                </div>
+
+                <div id="age">
+                    <label>
+                        <h4>Age</h4>
+                            <input type="radio" name="age" value="Young" checked="checked">Young<br>
+                            <input type="radio" name="age" value="Baby">Baby<br>
+                            <input type="radio" name="age" value="Adult">Adult<br>
+                            <input type="radio" name="age" value="Senior">Senior<br>
+                    </label>
+                 <div>
+                    <label>
+                        <h4> Breed:</h4>
+                        <input type="radio" name="size" value="S" checked="checked">Small<br>
+                        <input type="radio" name="size" value="M">Medium<br>
+                        <input type="radio" name="size" value="L">Large<br>
+                        <input type="radio" name="size" value="XL">Extra-Large<br>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <h4> Gender </h4>
+                        <input type="radio" name="gender" value="F" checked="checked">Female<br>
+                        <input type="radio" name="gender" value="M"> Male<br>
+                    </label> 
+                    <div>
+                    <label>
+                        <h4> Zipcode</h4>
+                        <input type="text" name="zipcode" value= "94621" required><br>
+
+                    <input type="submit" value="Submit">                       
+                    </label>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div>
-        <label>
-            Age:
-            <br>
-            <input type="radio" name="age" value="Young" checked="checked">Young<br>
-            <input type="radio" name="age" value="Baby">Baby<br>
-            <input type="radio" name="age" value="Adult">Adult<br>
-            <input type="radio" name="age" value="Senior">Senior<br>
-        </label>
-     <div>
-        <label>
-            Size:
-            <br>
-            <input type="radio" name="size" value="S" checked="checked">Small<br>
-            <input type="radio" name="size" value="M">Medium<br>
-            <input type="radio" name="size" value="L">Large<br>
-            <input type="radio" name="size" value="XL">Extra-Large<br>
-        </label>
-    </div>
-
-    <div>
-        <label>
-            Gender:
-            <br>
-            <input type="radio" name="gender" value="F" checked="checked">Female<br>
-            <input type="radio" name="gender" value="M"> Male<br>
-        </label> 
-        <div>
-        <label>
-            Zipcode:
-            <br>
-            <input type="text" name="zipcode" value= "94621" required><br>
-
-        <input type="submit" value="Submit">
-            
-        </label> 
-
-
-
-    </div>
-
-
-
-
-
-</form>
+</div>
 
 
 {% endblock %}

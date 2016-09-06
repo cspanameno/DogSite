@@ -1,33 +1,47 @@
 {% extends 'base.html' %}
+
 {% block content %}
+
+<link rel="stylesheet" href="/static/css/display-pets.css">
 
 <h1>Adoptable Dogs</h1>
 
-<div id="googleMap" style="width:500px;height:380px;"></div>
+<div id="googleMap" class="map" style="position: relative; overflow: hidden; height: 400px; background-color: rgb(229, 227, 223);"></div>
     
     
     {% if pets %}
 
     {% for pet in pets %}
 
-       <div>
+    {% if ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t')  %}
+
+       <div class="col-xs-12 col-md-6 col-lg-4" style="height:400;">
             
-            <div>
-                <h2>Name: {{ ( pet.get('name',{}) ).get('$t') }}</h2>
+            <div id="name">
+                <h2 id="name-text">{{ ( pet.get('name',{}) ).get('$t') }}</h2>
             </div> 
 
-            <div>
+            <!-- <div>
                 <p> Breeds: {% for breed in pet['breeds']['breed'] %}
                     {{ breed.get('$t') }},
                 {% endfor %}</p>
-            </div>  
+            </div> -->  
 
-            <div>
+            <!-- <div>
                 <p> Age: {{ ( pet.get('age',{}) ).get('$t') }} </p>
+            </div> -->
+  
+            <div class="pet-image"> 
+                <a href="/idv_pet/{{ pet.get('id')['$t'] }}"><img id= "photo" src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}></a>
+                <!-- <span class="item-title">
+                  <span itemprop="name">{ ( pet.get('name',{}) ).get('$t') }}</span> -->
+
             </div>
+
+
             <br>
             <div>
-                <button class="pet-fav {{ pet['fav'] }}" 
+                <button id="button" class="pet-fav {{ pet['fav'] }}" 
                 data-petid= "{{ pet.get('id')['$t'] }}" 
                 data-age="{{ ( pet.get('age',{}) ).get('$t') }}" 
                 data-breed= "{% for breed in pet['breeds']['breed'] %}{{ breed.get('$t') }},{% endfor %}"
@@ -38,19 +52,12 @@
                 data-gender= "{{ ( pet.get('sex',{}) ).get('$t') }}"
                 data-fav =  "{{ pet['fav'] }}"
 
-                type="button">Favorite Me!</button>
-            </div>
-            <br>
-            <a href="/idv_pet/{{ pet.get('id')['$t'] }}"> Check me out! </a>
-          
-            
-            <div>
-                 <img src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}>
-
+                type="button" style= "border: none;">Favorite Me!</button>
             </div>
 
-            
-        
+     </div>       
+    
+    {% endif %}
 
     {% endfor %}
 
@@ -62,13 +69,10 @@
     
     {% endif %}
 
-    <!-- <div id="googleMap" style="width:500px;height:380px;"></div> -->
-
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBMF6RlD6sQICD69YtAjoGcQpfgB5nUIXY"></script>
 
 <script>
     "use strict";
-    // console.log("Anything")
 
     function updatedFav(results) {
         console.log(results)
@@ -77,8 +81,6 @@
 
     function addFav(evt) {
         var petID = $(this).data('petid');
-        // debugger;
-
         var age = $(this).data('age');
         var breed = $(this).data('breed');
         var name = $(this).data('name');
@@ -90,8 +92,6 @@
 
 
         $.post("/fav", {'petID': petID, 'age': age, 'breed': breed, 'name': name, 'size': size, 'zipcode': zipcode, 'photo': photo, 'gender': gender},  updatedFav);
-
-        // console.log(petID)
 
     }
 
@@ -112,7 +112,6 @@
    
     var zip = zipcode.toString()
     var address = zip;
-    // console.log(address)
 
     var pet = new google.maps.Geocoder();
 
@@ -120,35 +119,24 @@
         function(results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
              var lat = results[0].geometry.location.lat();
-             // console.log(lat);
-             var lng = results[0].geometry.location.lng();
-             // console.log(lng)  
+             var lng = results[0].geometry.location.lng(); 
              petMarker(lat,lng, map);
             }
           else {
-            // alert("Geocode was not successful for the following reason: " + status);
             console.log("not successful")
           }
           return lat, lng;    
 
       });
-
-    // console.log('inside ziplat');
-
-    // var t = 'nothing';
-
-    // setTimeout(   function(){ t = lat; console.log(t);}   , 3000);
     
 }
 
 
 function initialize() {
 
-// console.log("in initialize")
-
   var mapProp = {
-    // center:new google.maps.LatLng(37.0902,-95.7129),
-    center:new google.maps.LatLng(37.7347,-122.2143),
+    center:new google.maps.LatLng(39.8282,-98.5795),
+    // center:new google.maps.LatLng(37.7347,-122.2143),
     // zoom:3,
     zoom:5,
     mapTypeId:google.maps.MapTypeId.ROADMAP
@@ -159,19 +147,9 @@ function initialize() {
 
 }
 
-// var image = {
-//           url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-//           // This marker is 20 pixels wide by 32 pixels high.
-//           size: new google.maps.Size(20, 32),
-//           // The origin for this image is (0, 0).
-//           origin: new google.maps.Point(0, 0),
-//           // The anchor for this image is the base of the flagpole at (0, 32).
-//           anchor: new google.maps.Point(0, 32)
-//         };
+
 
 function petMarker(lat, lng, map) {
-
-    // console.log("Got to petMarker")
 
      var marker = new google.maps.Marker({
           position: {lat: lat, lng: lng},
@@ -189,130 +167,23 @@ function petMarker(lat, lng, map) {
 function mapsFunc(){
     google.maps.event.addDomListener(window, 'load', function () {
      var map =  initialize();
-      // var latlngs = [];
-
-
+    
       $.each($('.pet-fav'), function (i, button){
 
           var zipcode = $(button).data('zipcode');
-          // console.log
           zipLat(zipcode, map);
-          // latlngs.push(latLong);
-          // console.log(latLong);
 
 
       });
-      // for (var i = 0; i < latlngs.length; i++) {
-      //   console.log('Inside for loop')
-        // var ll = latlngs[i];
-        // var zipStr = zip.toString();
-        
-      
-
   });
 
-    // console.log('**************last lat lng values****************');
-    // console.log(lat);
-    // console.log(lng);
-    // console.log('*************************************************');
 }
 
 mapsFunc();
 
 
-
-
-// var lat = '';
-// var lng = '';
-// zipLat('{{ zipcode }}');
-
-
-
-// setTimeout('mapsFunc()', 4000);
-
-// function getZips(){
-
-// var buttons = $(this).data('zipcode');
-
-//empty array, append each latlong from zip
-
-// var listZips = [];
-
-
-// $.each($('.pet-fav'), function (i, button){
-
-//     var zipcode = $(button).data('zipcode');
-//     // console.log
-//     listZips.push(zipcode);
-//     var latLong = zipLat('zipcode');
-//     // console.log(latLong);
-
-// });
-
-
-
-
-
-// console.log(listZips)
-
-// for (var i = 0; i < listZips.length; i++) {
-//     console.log('Inside for loop')
-//     var zip = listZips[i];
-//     var zipStr = zip.toString();
-//     // console.log(zip)
-//     // setTimeout(zipLat(zipStr), 4000);
-//     // setTimeout(petMarker(lat,lng,map), 1000);
-//     // setTimeout(mapsFunc(), 8000);
-//     // zipLat(zipStr);
-//     console.log('after petLatLng is called')
-//     console.log(petLatlng)
-
-// }
-// var latLong = zipLat('listZips');
-
-
-
-
-
-
-// console.log(buttons)
-// console.log(typeof(buttons))
-
-// var pets = ["{% for pet in pets %}{{ (pet.get('contact', {})).get('zip', {}).get('$t') }}{% endfor %}"];
-// console.log(pets)
-
-// var pets = ['{{ pets }}']
-// console.log(pets)
-// console.log(typeof(pets))
-
-
-
- 
-// for (var i = 0; i < buttons.length; i++) {
-//     var singleButton = buttons[i];
-//     console.log(singleButton.data('zipcode'))
-// }
-
-// }
-
-
-// getZips()
-
-// function markFavs() {
-//       $(this).prop("disabled", true);
-//       $(this).css("background-color", "red")
-
-//     }
-
-
 $(document).ready( function() {
     var buttons = $('.has-been-favorited').prop("disabled", true).css("background-color", "red");
-    // console.log(buttons);
-    // for (var i = 0; i < buttons.length; i++) {
-    //   var singleButton = buttons[i];
-    //   console.log(singleButton.data('fav'));
-    //   console.log("we are here")
-  // }
 
 });
 

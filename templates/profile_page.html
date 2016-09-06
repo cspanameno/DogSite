@@ -1,28 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
+<link rel="stylesheet" href="/static/css/favorites.css">
 
-<h2>Profile Page</h2>
+<h2>Favorite Dogs</h2>
    {% for pet in pets %}
-     <div>
-        <h1>Name: {{ pet.name }} </h1> 
-     </div>
+    <div class="col-xs-4 col-md-4 col-lg-4" id="information"> 
+         <div>
+            <h1>{{ pet.name }} </h1> 
+         </div>
 
-     <div>
-        <p>Gender: {{ pet.gender }}</p>
-     </div>
+         <div>
+            <p>Gender: {{ pet.gender }}</p>
+         </div>
 
-     <div>
-        <p>Zipcode: {{ pet.zipcode }}</p>
-     </div>
+         <div>
+            <p>Zipcode: {{ pet.zipcode }}</p>
+         </div>
 
-     <div>
-        <p>Size: {{ pet.size }}</p>
-     </div>
-     <img src={{ pet.photo_url }}>
+         <div>
+            <p>Size: {{ pet.size }}</p>
+         </div>
+         <a href="/idv_pet/{{ pet.api_id }}"><img id="photo" src={{ pet.photo_url }}></a>
+    </div>
 
-     <br>
-
-     <a href="/idv_pet/{{ pet.api_id }}"> See more about me</a>
+     
     
     {% endfor %}
 
