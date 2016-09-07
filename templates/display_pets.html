@@ -4,32 +4,25 @@
 
 <link rel="stylesheet" href="/static/css/display-pets.css">
 
-<h1>Adoptable Dogs</h1>
+<h1>Your Matches</h1>
 
-<div id="googleMap" class="map" style="position: relative; overflow: hidden; height: 400px; background-color: rgb(229, 227, 223);"></div>
-    
+<div id="googleMap" class="map" style="position: relative; overflow: hidden; height: 300px; background-color: rgb(229, 227, 223);"></div>
+  
+  <!-- <div class="container-fluid"> -->
+      <!-- <div class="row"> -->
     
     {% if pets %}
 
     {% for pet in pets %}
 
     {% if ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t')  %}
+    
 
        <div class="col-xs-12 col-md-6 col-lg-4" style="height:400;">
             
             <div id="name">
                 <h2 id="name-text">{{ ( pet.get('name',{}) ).get('$t') }}</h2>
-            </div> 
-
-            <!-- <div>
-                <p> Breeds: {% for breed in pet['breeds']['breed'] %}
-                    {{ breed.get('$t') }},
-                {% endfor %}</p>
-            </div> -->  
-
-            <!-- <div>
-                <p> Age: {{ ( pet.get('age',{}) ).get('$t') }} </p>
-            </div> -->
+            </div>
   
             <div class="pet-image"> 
                 <a href="/idv_pet/{{ pet.get('id')['$t'] }}"><img id= "photo" src={{  ( ( ( pet.get('media',{}) ).get('photos', {}) ).get('photo', ['','',{}])[2] ).get('$t') }}></a>
@@ -52,15 +45,16 @@
                 data-gender= "{{ ( pet.get('sex',{}) ).get('$t') }}"
                 data-fav =  "{{ pet['fav'] }}"
 
-                type="button" style= "border: none;">Favorite Me!</button>
+                type="button" style= "border: none;">Favorite</button>
             </div>
 
-     </div>       
+        </div> 
+     <!-- </div> -->
+    <!-- </div>  -->     
     
     {% endif %}
 
     {% endfor %}
-
     {%  else %}
         <div>
             <h1> Sorry. No pets found.  </h1>
@@ -68,6 +62,10 @@
         </div>
     
     {% endif %}
+        <!-- <div class="span6">
+            <h2 style="padding-bottom:5px;"> </h2>
+            <p  style="padding-top:50px;"> DogSite </p>
+        </div> -->
 
 <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBMF6RlD6sQICD69YtAjoGcQpfgB5nUIXY"></script>
 
@@ -100,7 +98,7 @@
 
     $(".pet-fav").on("click", function(event) {
       $(event.target).prop("disabled", true);
-      $(event.target).css("background-color", "red")
+      $(event.target).css("background-color", "#ff0066")
 
 
     });
@@ -135,8 +133,8 @@
 function initialize() {
 
   var mapProp = {
-    center:new google.maps.LatLng(39.8282,-98.5795),
-    // center:new google.maps.LatLng(37.7347,-122.2143),
+    // center:new google.maps.LatLng(39.8282,-98.5795),
+    center:new google.maps.LatLng(37.7347,-122.2143),
     // zoom:3,
     zoom:5,
     mapTypeId:google.maps.MapTypeId.ROADMAP
@@ -183,7 +181,7 @@ mapsFunc();
 
 
 $(document).ready( function() {
-    var buttons = $('.has-been-favorited').prop("disabled", true).css("background-color", "red");
+    var buttons = $('.has-been-favorited').prop("disabled", true).css("background-color", "#ff0066");
 
 });
 

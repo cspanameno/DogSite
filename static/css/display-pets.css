@@ -4,24 +4,44 @@
     height:380px;
 }*/
 
+body {
+    background: url("/static/img/paper.png");
+    background-size: cover;
+    color: black;
+    text-align: center;
+
+}
 
 h2 {
     display: block;
-    font-size: 1.5em;
+    font-size: 2em;
     text-align: center;
 
 }
 
 #photo {
-    height:300px;
-    width: 300px;
-    margin-left: 50px;
+    height:250px;
+    width: 275px;
+    margin-left: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
 }
 
 button { 
-    margin: -20px -50px; 
-    position:relative;
-    top:50%; 
-    left:50%;
+    margin: -15px -25px; 
+    position:center;
+    top:8%; 
+    left:8%;
+    border-radius: 25%;
+    width: 30%;
 
 }
+
+/*#name {
+    text-align: center;
+}*/
+
+

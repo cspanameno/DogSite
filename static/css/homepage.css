@@ -2,14 +2,33 @@
 
 
 body {
-    background: url("/static/img/pexel.jpg");
+    background: url("/static/img/paper.png");
     background-size: cover;
     color: black;
     text-align: center;
 
 }
-h1 {
+/*.jumbotron h1 {
      font-size:66px;
+     margin-top: 0;
+     padding-top: 0;
+
+}*/
+
+#match {
+    color:#66ffff;
+}
+
+.jumbotron {
+    background: url("/static/img/doggystyle_blur_middle.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
 }
 #signup {
     text-align: center;
@@ -38,15 +57,27 @@ h1 {
 }
 
 #background-l {
-    background: rgba(0, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 25px;
+    width: 400px;
 }
 
 #background-r {
-    background: rgba(0, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 25px;
+    width: 400px;
+}
 
-    
+.navbar {
+    margin-bottom: 0;
+}
+
+form { 
+margin: 0 auto; 
+width:250px;
+}
+
+
 
 /*.right{
 /*    background-color: #000;

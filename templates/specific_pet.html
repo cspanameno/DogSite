@@ -15,44 +15,45 @@
         <div id="information" class="col-xs-12 col-md-6 col-lg-4">
             <div>
                 <h5>Gender: {{ pet.get('sex')['$t'] }}</h5>
+
             </div>
             
             <div>
-                Mixed Breed: {{pet.get('mix')['$t']}}
+                <h5>Mixed Breed: {{pet.get('mix')['$t']}}</h5>
             </div>
 
             <div>
-                Breeds:{% for breed in breeds %}<li>{{ breed.get('$t') }}</li>
-                {% endfor %}
+                <h5>Breeds:<br>{% for breed in breeds %}{{ breed.get('$t') }}
+                {% endfor %}</h5>
             </div>
             
             <div>
                 {% if pet['contact'].get('address1') %}
-                 Address: {{ pet['contact'].get('address1')['$t']}}
+                 <h5>Address: {{ pet['contact'].get('address1')['$t']}}</h5>
                 {% endif %}
             </div>
            
             <div>
                 {% if  pet['contact'].get('city') %}
-                    {{  pet['contact'].get('city')['$t']}}
+                    <h5>City: {{  pet['contact'].get('city')['$t']}}</h5>
                 {% endif %}
             </div>
 
               <div>
                 {% if  pet['contact'].get('email') %}
-                    Email: {{  pet['contact'].get('email')['$t']}}
+                    <h5>Email: {{  pet['contact'].get('email')['$t']}}</h5>
                 {% endif %}
             </div>
 
              <div>
                 {% if  pet['contact'].get('phone') %}
-                    Phone Number: {{  pet['contact'].get('phone')['$t']}}
+                    <h5>Phone Number: {{  pet['contact'].get('phone')['$t']}}</h5>
                 {% endif %}
             </div>
 
              <div>
                 {% if  pet['contact'].get('zip') %}
-                    Zipcode: {{  pet['contact'].get('zip')['$t']}}
+                    <h5>Zipcode: {{  pet['contact'].get('zip')['$t']}}</h5>
                 {% endif %}
             </div>          
             
@@ -62,7 +63,7 @@
                 
             <div id="description"class="col-xs-12 col-md-6 col-lg-12">
                 <h3>Description</h3>
-                 <p>{{pet.get('description').get('$t','')}}</p>
+                    <div id="details"><p>{{pet.get('description').get('$t','')}}</p></div>  
             </div>
 
 

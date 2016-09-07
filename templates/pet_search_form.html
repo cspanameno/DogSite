@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/static/css/search-form.css">
 
 <div class="container">
-    <div class="row">
+    <div class="row" id="background">
         <div id="info" class="col-md-6 col-md-offset-3">
             <form action="/search" method="GET">            
                 <div>
@@ -20,7 +20,7 @@
 
                 <div id="age">
                     <label>
-                        <h4>Age</h4>
+                        <h4>Age:</h4>
                             <input type="radio" name="age" value="Young" checked="checked">Young<br>
                             <input type="radio" name="age" value="Baby">Baby<br>
                             <input type="radio" name="age" value="Adult">Adult<br>
@@ -28,7 +28,7 @@
                     </label>
                  <div>
                     <label>
-                        <h4> Breed:</h4>
+                        <h4>Breed:</h4>
                         <input type="radio" name="size" value="S" checked="checked">Small<br>
                         <input type="radio" name="size" value="M">Medium<br>
                         <input type="radio" name="size" value="L">Large<br>
@@ -38,13 +38,13 @@
 
                 <div>
                     <label>
-                        <h4> Gender </h4>
+                        <h4>Gender:</h4>
                         <input type="radio" name="gender" value="F" checked="checked">Female<br>
                         <input type="radio" name="gender" value="M"> Male<br>
                     </label> 
                     <div>
                     <label>
-                        <h4> Zipcode</h4>
+                        <h4>Zipcode:</h4>
                         <input type="text" name="zipcode" value= "94621" required><br>
 
                     <input type="submit" value="Submit">                       

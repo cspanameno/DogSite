@@ -1,5 +1,13 @@
-h4 {
+body {
+    background: url("/static/img/paper.png");
+    background-size: cover;
+    color: black;
     text-align: center;
+
+}
+h4 {
+    text-align: left;
+    font-weight: bold;
 }
 
 /*#age{
@@ -7,5 +15,20 @@ h4 {
 }*/
 
 #info{
-    text-align: center;
+    text-align: left;
+}
+
+form { 
+margin: 0 auto; 
+width:250px;
+}
+
+#background {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    width: 500px;
+    margin: 0 auto;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
 }

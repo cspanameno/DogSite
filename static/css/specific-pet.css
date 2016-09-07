@@ -1,3 +1,11 @@
+body {
+    background: url("/static/img/paper.png");
+    background-size: cover;
+    color: black;
+    text-align: center;
+
+}
+
 h1 {
     display: block;
     font-size: 75px;
@@ -11,13 +19,22 @@ h1 {
     margin: 20px 20px;
     border-style: solid;
     border-width: 5px;
-    background: #00FFFF;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    border-color: white;
     
 }
 
 h3 {
     display: block;
     font-size: 40px;
+    text-align: center;
+
+}
+
+h5 {
+    display: block;
+    font-size: 16px;
     text-align: center;
 
 }
@@ -30,9 +47,29 @@ h3 {
     /*border-style: solid;
     border-width: 5px;*/
 }
+#details {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 10px;
+    margin: 8px 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    border-color: white;
+    border-style: solid;
+    border-width: 5px;
+    /*border-style: solid;
+    border-width: 5px;*/
+}
 
 #photo {
+    height:300px;
+    width: 300px;
     border-width:5px;
     border-style: solid;
     border color: #00FFFF;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
 }

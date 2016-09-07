@@ -1,16 +1,38 @@
-#information {
+body {
+    background: url("/static/img/paper.png");
+    background-size: cover;
+    color: black;
+    text-align: center;
+
+}
+
+#background {
     display: inline-block;
-    text-align: left;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
     padding: 12px 20px;
     margin: 20px 20px;
-    border-style: solid;
-    border-width: 5px;
-    background: #00FFFF;
     
 }
 
+
 #photo {
-    height:300px;
-    width: 300px;
-    margin-left: 50px;
+    height:250px;
+    width: 250px;
+    margin-left: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
+}
+
+h1 {
+    display: block;
+    font-size: 40px;
+    text-align: center;
 }

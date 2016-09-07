@@ -134,10 +134,12 @@ def process_form():
     zipcode = request.args.get("zipcode")
 
     r = search_dogs_api(breed, age, size, gender, zipcode)
-
     result = r.json()
- 
 
+    #nj# this is a quick and dirty bug fix
+    if 'pets' not in result['petfinder']:
+        return render_template("display_pets.html", pets=[], zipcode=zipcode)
+ 
     if isinstance(result['petfinder']['pets'].get('pet'), dict):
         pets = [result['petfinder']['pets'].get('pet')]
     else:
@@ -159,10 +161,12 @@ def process_form():
             pet['breeds']['breed'] = pet['breeds']['breed']
         
         # print type(favorite_pets[0])
+        #nj# rather do this
+        # pet['fav'] = str(pet.get('id')['$t']) in fav_pets
         if str(pet.get('id')['$t']) in fav_pets:
-            pet['fav'] = 'has-been-favorited'
+            pet['fav'] = 'has-been-favorited' #nj# should be true
         else:
-            pet['fav'] = 'not-favorited'
+            pet['fav'] = 'not-favorited' #nj# should be false
         # print "***********\n\n\n"
         # print str(pet.get('id')['$t'])
         # print "\n\n\n***********"
