@@ -1,4 +1,4 @@
-![DogSite Logo](/graphics/logo.png")
+![DogSite Logo](/graphics/Doglogo.png")
 
 DogSite allows users to browse adoptable dogs in their area by filtering by dog breed, size, age, and zipcode. The application analyzes data from the Petfinder API and provides information about their medical record, shelter, and behavior.The app also integrates the Google Maps API to allow users to easily identify nearby dogs and shelters.  When logged in, users can save dog listings to their favorites for later reviewing.  
 
@@ -29,7 +29,7 @@ According to the ASPCA, approximately 3.9 million dogs enter shelters in the Uni
 ####Login 
 The users can register or login from the homepage. Signing up allows the user's information to be saved in the Postgres database using SQLAlchemy and allows them to save their favorite pets for later vieweing.
 
-![Login](/graphics/comment.gif)
+![Login](/graphics/homepage.png)
 
 ####Search Form
 After signing in, users are directed to a search form to filter by dog criteria including breed, size, age, gender, and zipcode. When the user clicks submit the values are sent to the Flask server app that then makes an API call to the Petfinder API. The response is then normalized in the server and displayed using Jinja on the following page. 
