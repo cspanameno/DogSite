@@ -1,4 +1,4 @@
-![DogSite Logo](/graphics/Doglogo.png")
+![DogSite Logo](/graphics/doglogo.png")
 
 DogSite allows users to browse adoptable dogs in their area by filtering by dog breed, size, age, and zipcode. The application analyzes data from the Petfinder API and provides information about their medical record, shelter, and behavior.The app also integrates the Google Maps API to allow users to easily identify nearby dogs and shelters.  When logged in, users can save dog listings to their favorites for later reviewing.  
 
@@ -44,12 +44,12 @@ The page displays the results provided by the API, and also has Google Maps API 
 ####Favorites
 After a user favorites a dog they can view all favorite pets under the favorite tab for later reviewing.   
 
-![Favorites](/graphics/favorites.gif)
+![Favorites](/graphics/favorites.png)
 
 ####Additional Dog Information
 where they can also click on a picture to view additional information about the dog such as address, breeds (if mixed), and description. The additional information is obtained by sending another API call to the Petfinder API using a different method.
 
-![Additional Dog Information](/graphics/additional_info.gif)
+![Additional Dog Information](/graphics/additional_info.png)
 
 
 ## <a name="v2"></a>Version 2.0
