@@ -17,8 +17,6 @@ app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
 
-# Normally, if you use an undefined variable in Jinja2, it fails silently.
-# This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 app.jinja_env.auto_reload = True
 
@@ -74,7 +72,7 @@ def process_login():
     password = request.form.get("password")
 
     user = User.query.filter_by(email=email).first()
-    # print user
+   
 
     if not user:
         flash("This email does not exist, please register")
@@ -136,7 +134,7 @@ def process_form():
     r = search_dogs_api(breed, age, size, gender, zipcode)
     result = r.json()
 
-    #nj# this is a quick and dirty bug fix
+    
     if 'pets' not in result['petfinder']:
         return render_template("display_pets.html", pets=[], zipcode=zipcode)
  
@@ -160,16 +158,12 @@ def process_form():
         else:
             pet['breeds']['breed'] = pet['breeds']['breed']
         
-        # print type(favorite_pets[0])
-        #nj# rather do this
-        # pet['fav'] = str(pet.get('id')['$t']) in fav_pets
+        
         if str(pet.get('id')['$t']) in fav_pets:
-            pet['fav'] = 'has-been-favorited' #nj# should be true
+            pet['fav'] = 'has-been-favorited' 
         else:
-            pet['fav'] = 'not-favorited' #nj# should be false
-        # print "***********\n\n\n"
-        # print str(pet.get('id')['$t'])
-        # print "\n\n\n***********"
+            pet['fav'] = 'not-favorited' 
+        
 
     return render_template("display_pets.html", pets=pets, zipcode=zipcode)
 
